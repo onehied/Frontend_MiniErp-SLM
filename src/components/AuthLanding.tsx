@@ -123,7 +123,7 @@ export default function AuthLanding() {
       setError('');
       setSuccess('');
       setLoading(true);
-      window.location.href = `${getApiOrigin()}/api/auth/google`;
+      window.location.href = `${getApiOrigin()}/auth/google`;
     } catch (err: any) {
       setError(err?.message || 'Login Google gagal');
     } finally {
