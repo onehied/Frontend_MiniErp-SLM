@@ -1,7 +1,6 @@
 'use client';
 
 import { authAPI } from '@/lib/api-calls';
-import { requestGoogleIdToken } from '@/lib/google-identity';
 import { useAuthStore } from '@/store/auth';
 import { Camera, Link2, Mail, Save, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
@@ -156,34 +155,14 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
   const handleLinkGoogle = async () => {
     try {
       setGoogleLoading(true);
-      const idToken = await requestGoogleIdToken(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
-      const response = await authAPI.linkGoogle(idToken);
-      const linkedUser = response.data;
+      const response = await authAPI.startGoogleLink();
+      const authorizationUrl = response.data?.authorizationUrl;
 
-      const nextUser = {
-        ...user,
-        googleLinked: linkedUser.googleLinked,
-        googleEmail: linkedUser.googleEmail,
-        googleName: linkedUser.googleName,
-        googleAvatarUrl: linkedUser.googleAvatarUrl,
-      };
+      if (!authorizationUrl) {
+        throw new Error('URL otorisasi Google tidak tersedia.');
+      }
 
-      setUser(nextUser);
-      setProfile((prev) => ({
-        ...prev,
-        avatarUrl:
-          prev.avatarUrl ||
-          linkedUser.googleAvatarUrl ||
-          prev.avatarUrl,
-      }));
-
-      await Swal.fire({
-        icon: 'success',
-        title: 'Akun Google tertaut',
-        text: linkedUser.googleName
-          ? `Akun Google berhasil ditautkan sebagai ${linkedUser.googleName}.`
-          : 'Akun Google berhasil ditautkan.',
-      });
+      window.location.href = authorizationUrl;
     } catch (err: any) {
       await Swal.fire({
         icon: 'error',

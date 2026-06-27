@@ -39,6 +39,9 @@ export const authAPI = {
   linkGoogle: (idToken: string) =>
     api.post('/auth/google/link', { idToken }),
 
+  startGoogleLink: () =>
+    api.post('/auth/google/link/start'),
+
   unlinkGoogle: () =>
     api.post('/auth/google/unlink'),
 

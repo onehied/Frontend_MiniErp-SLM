@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { authAPI } from '@/lib/api-calls';
+import { toast } from 'sonner';
 
 export default function GoogleAuthCallbackPage() {
   const router = useRouter();
@@ -11,9 +12,34 @@ export default function GoogleAuthCallbackPage() {
   const { setToken, setRefreshToken, setUser } = useAuthStore();
 
   useEffect(() => {
+    const mode = searchParams.get('mode');
+    const status = searchParams.get('status');
+    const message = searchParams.get('message');
     const accessToken = searchParams.get('access_token');
     const refreshToken = searchParams.get('refresh_token');
     const error = searchParams.get('error');
+
+    if (mode === 'link_google') {
+      const completeGoogleLink = async () => {
+        try {
+          const response = await authAPI.getMe();
+          setUser(response.data);
+        } catch {
+          // Ignore; state refresh is best effort only.
+        }
+
+        if (status === 'success') {
+          toast.success(message || 'Akun Google berhasil ditautkan.');
+        } else {
+          toast.error(message || 'Gagal menautkan akun Google.');
+        }
+
+        router.replace('/dashboard');
+      };
+
+      completeGoogleLink();
+      return;
+    }
 
     if (error) {
       router.replace(`/login?error=${encodeURIComponent(error)}`);
@@ -45,7 +71,7 @@ export default function GoogleAuthCallbackPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
       <div className="rounded-3xl border border-slate-200 bg-white px-6 py-5 text-sm font-medium text-slate-700 shadow-2xl dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100">
-        Memproses login Google...
+        Memproses autentikasi Google...
       </div>
     </main>
   );
