@@ -156,7 +156,7 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
   const handleLinkGoogle = async () => {
     try {
       setGoogleLoading(true);
-      const idToken = await requestGoogleIdToken(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '');
+      const idToken = await requestGoogleIdToken(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
       const response = await authAPI.linkGoogle(idToken);
       const linkedUser = response.data;
 
@@ -169,11 +169,20 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
       };
 
       setUser(nextUser);
+      setProfile((prev) => ({
+        ...prev,
+        avatarUrl:
+          prev.avatarUrl ||
+          linkedUser.googleAvatarUrl ||
+          prev.avatarUrl,
+      }));
 
       await Swal.fire({
         icon: 'success',
         title: 'Akun Google tertaut',
-        text: 'Akun Google berhasil ditautkan.',
+        text: linkedUser.googleName
+          ? `Akun Google berhasil ditautkan sebagai ${linkedUser.googleName}.`
+          : 'Akun Google berhasil ditautkan.',
       });
     } catch (err: any) {
       await Swal.fire({

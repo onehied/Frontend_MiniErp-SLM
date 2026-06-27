@@ -1,4 +1,5 @@
 let scriptLoader: Promise<void> | null = null;
+let clientIdLoader: Promise<string> | null = null;
 
 declare global {
   interface Window {
@@ -38,18 +39,51 @@ function loadGoogleScript() {
   return scriptLoader;
 }
 
-export async function requestGoogleIdToken(clientId: string): Promise<string> {
-  if (!clientId) {
-    throw new Error('GOOGLE_CLIENT_ID belum dikonfigurasi.');
+async function resolveGoogleClientId(clientId?: string): Promise<string> {
+  if (clientId?.trim()) {
+    return clientId.trim();
   }
 
+  if (!clientIdLoader) {
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+
+    clientIdLoader = fetch(`${apiBaseUrl.replace(/\/$/, '')}/auth/google/client-config`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('GOOGLE_CLIENT_ID belum dikonfigurasi di backend.');
+        }
+
+        const payload = (await response.json()) as { clientId?: string };
+        if (!payload?.clientId?.trim()) {
+          throw new Error('GOOGLE_CLIENT_ID tidak ditemukan.');
+        }
+
+        return payload.clientId.trim();
+      })
+      .catch((error) => {
+        clientIdLoader = null;
+        throw error;
+      });
+  }
+
+  return clientIdLoader;
+}
+
+export async function requestGoogleIdToken(clientId?: string): Promise<string> {
+  const resolvedClientId = await resolveGoogleClientId(clientId);
   await loadGoogleScript();
 
   return new Promise((resolve, reject) => {
     let resolved = false;
 
     window.google.accounts.id.initialize({
-      client_id: clientId,
+      client_id: resolvedClientId,
       callback: (response: { credential?: string }) => {
         if (response?.credential) {
           resolved = true;
