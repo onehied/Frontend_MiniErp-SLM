@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --slm-primary: #0f4c81;
+  --slm-accent: #14b8a6;
+  --slm-bg-light: #eef3f8;
+  --slm-bg-dark: #0b1220;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply min-h-screen text-slate-900 antialiased;
+  background: radial-gradient(circle at 2% 0%, #d8e8f8 0%, var(--slm-bg-light) 28%, #f7f9fc 100%);
+}
+
+html.dark body {
+  @apply text-slate-100;
+  background: radial-gradient(circle at 0% 0%, #10223b 0%, var(--slm-bg-dark) 45%, #090f1c 100%);
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+button {
+  @apply transition duration-200 ease-in-out;
+}
+
+.btn-primary {
+  @apply text-white px-4 py-2 rounded-xl font-semibold shadow-xl;
+  background: linear-gradient(135deg, var(--slm-primary) 0%, #1d6bb0 100%);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0b3f6c 0%, #1a5f9c 100%);
+}
+
+.btn-secondary {
+  @apply bg-white hover:bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-semibold border border-slate-200;
+}
+
+.card {
+  @apply bg-white rounded-[20px] p-6;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+}
+
+.input-field {
+  @apply w-full px-3 py-2 min-h-[36px] border border-slate-200 rounded-xl bg-white text-slate-900 text-sm placeholder:text-slate-400 focus:ring-2 focus:border-transparent outline-none transition-all;
+  --tw-ring-color: #1d6bb0;
+}
+
+.input-field.invalid {
+  @apply border-red-500 focus:ring-red-500/30;
+}
+
+.error-text {
+  @apply text-red-500 text-xs mt-1;
+}
+
+.btn-success {
+  @apply text-white px-4 py-2 rounded-xl font-semibold shadow-xl bg-green-600 hover:bg-green-700 transition;
+}
+
+.btn-update {
+  @apply text-white px-4 py-2 rounded-xl font-semibold shadow-xl transition;
+  background: linear-gradient(135deg, var(--slm-primary) 0%, #1d6bb0 100%);
+}
+
+.btn-update:hover {
+  background: linear-gradient(135deg, #0b3f6c 0%, #1a5f9c 100%);
+}
+
+.btn-back {
+  @apply bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-semibold transition;
+}
+
+html.dark .card {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e2e8f0;
+  border: 1px solid #1f2937;
+  box-shadow: 0 12px 36px rgba(2, 6, 23, 0.45);
+}
+
+html.dark .input-field {
+  background: #0b1220;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+html.dark .input-field::placeholder {
+  color: #64748b;
+}
+
+html.dark .btn-secondary {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+html.dark .btn-secondary:hover {
+  background: #334155;
+}
+
+@keyframes auth-bg-zoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.auth-bg-zoom {
+  animation: auth-bg-zoom 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+.tooltip-trigger::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translate(-50%, 4px);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.96);
+  color: #f8fafc;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 10px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 70;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.tooltip-trigger::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid rgba(15, 23, 42, 0.96);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 70;
+  transition: opacity 0.18s ease;
+}
+
+.tooltip-trigger:hover::after,
+.tooltip-trigger:hover::before,
+.tooltip-trigger:focus-visible::after,
+.tooltip-trigger:focus-visible::before {
+  opacity: 1;
+}
+
+.tooltip-trigger:hover::after,
+.tooltip-trigger:focus-visible::after {
+  transform: translate(-50%, 0);
+}
+
+.tooltip-trigger[data-tooltip='']::after,
+.tooltip-trigger[data-tooltip='']::before {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-bg-zoom {
+    animation: none;
+  }
+}
+
+html.dark table thead {
+  color: #cbd5e1;
+}
+
+html.dark table tbody tr {
+  border-color: #334155;
+}
+
+html.dark table tbody tr:hover {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+html.dark label,
+html.dark p,
+html.dark span,
+html.dark th,
+html.dark td,
+html.dark h1,
+html.dark h2,
+html.dark h3 {
+  text-shadow: none;
+}
