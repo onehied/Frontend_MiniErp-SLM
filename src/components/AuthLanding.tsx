@@ -246,7 +246,7 @@ export default function AuthLanding() {
       </div>
 
       <div className="relative z-10 flex min-h-screen items-center px-4 py-6 sm:px-6 lg:justify-end lg:px-10">
-        <div className="w-full max-w-2xl rounded-[32px] border border-slate-200/90 bg-white p-5 shadow-2xl backdrop-blur-xl sm:p-8 lg:mr-6 lg:w-[520px] dark:border-slate-700 dark:bg-slate-950/90">
+        <div className="w-full max-w-2xl rounded-[32px] border border-slate-200/40 bg-white/30 p-5 shadow-2xl backdrop-blur-xl sm:p-8 lg:mr-6 lg:w-[520px] dark:border-slate-700/40 dark:bg-slate-900/30">
           <div className="mb-5 text-left lg:hidden">
             <Image
               src="/slm-logo.svg"
@@ -256,22 +256,22 @@ export default function AuthLanding() {
               className="mb-3 h-8 w-auto transition duration-500 hover:scale-[1.03]"
               priority
             />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-700 dark:text-slate-300">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white text-slate-700 dark:text-slate-300">
               Sinarmas LDA Maritime
             </p>
-            <h1 className="mt-2 text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-3xl">
+            {/* <h1 className="mt-2 text-2xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-3xl">
               Secure, Agile, Friendly and Experienced.
             </h1>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               Integrated maritime logistics platform for operations, customer, and invoice management.
-            </p>
+            </p> */}
           </div>
 
           <div className="mb-5">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-2xl font-semibold text-white text-slate-900 dark:text-white">
               {mode === 'login' ? 'Login Account' : mode === 'register' ? 'Create Account' : 'Forgot Password'}
             </h2>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+            <p className="mt-1 text-sm text-white text-slate-600 dark:text-slate-300">
               {mode === 'login'
                 ? 'Masuk ke dashboard mini ERP Anda.'
                 : mode === 'register'
@@ -294,8 +294,31 @@ export default function AuthLanding() {
 
           {mode === 'login' && (
             <form onSubmit={handleLogin} className="space-y-4">
+              <div className="mt-6 rounded-md border border-red-200 bg-red-50 p-3 text-xs text-red-700 dark:border-red-700 dark:bg-red-800 dark:text-red-200">
+                  <p className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-[#0f4c81]">🔐</span> Informasi Login
+                  </p>
+                  <hr className="my-2 border-red-200 dark:border-red-700" />
+                  <ul className="space-y-1">
+                    <li>
+                      <span className="font-medium">Role Admin<br></br></span>
+                      <span className="ml-2">admin@email.com / password123</span>
+                    </li>
+                    <li>
+                      <span className="font-medium">Role User<br></br></span>
+                      <span className="ml-2">user@email.com / password123</span>
+                    </li>
+                    <li><br />
+                      <span className="font-medium">Google Login:</span>
+                      <span className="ml-2">
+                        Klik tombol <strong>Sign in with Google</strong>.  
+                        Setelah akun ditautkan, gunakan password default <code>password123</code>.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-800 dark:text-slate-100">Email</label>
+                <label className="mb-2 block text-sm font-medium text-white text-slate-800 dark:text-slate-100">Email</label>
                 <input
                   type="email"
                   value={loginForm.email}
@@ -305,13 +328,13 @@ export default function AuthLanding() {
                   required
                 />
                 {loginFieldErrors.email && (
-                  <p className="mt-1 text-sm font-medium text-rose-600 dark:text-rose-400">{loginFieldErrors.email}</p>
+                  <p className="mt-1 text-sm font-medium text-white text-red text-rose-600 dark:text-rose-400">{loginFieldErrors.email}</p>
                 )}
               </div>
 
               <div>
                 <div className="mb-2 flex items-center justify-between gap-3">
-                  <label className="block text-sm font-medium text-slate-800 dark:text-slate-100">Password</label>
+                  <label className="block text-sm font-medium text-white text-slate-800 dark:text-slate-100">Password</label>
                   <button
                     type="button"
                     onClick={() => router.push('/forgot-password')}
